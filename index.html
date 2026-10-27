@@ -402,6 +402,7 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
   .bar nav a{letter-spacing:.08em;font-size:min(10px,2.6vw);white-space:nowrap;flex:0 0 auto}
   .pj-head .sub span:last-child{display:none}
   .pf-tl{display:none!important}
+  .home #gbox .stage{-webkit-mask-image:none;mask-image:none}
   .g3-lab b{font-size:8px;letter-spacing:.12em;padding:3px 5px 2px}
   .g3-lab span{display:none}
   .g3-lab::after{height:calc(var(--st,26px)*.5)}
@@ -1434,11 +1435,11 @@ let AG=[],acur=-1,WH=null;const VIS={e:1,c:1,a:0};const selI=()=>acur>=0?100+acu
 function marks(){document.querySelectorAll(".it").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("on",i===selI());b.classList.toggle("hot",i===hov)})}
 function caption(i){if(i<0){$("tit").textContent="";$("sub").textContent="";return}if(i>=100){const a=AG[i-100];$("tit").textContent=a.t;$("sub").textContent=(a.t!==a.c?a.c+" · ":"")+a.y;return}$("tit").textContent=P[i].t;$("sub").textContent=P[i].s}
 // la plongée : le globe tourne vers le lieu, on descend, la vue s'incline et la maquette s'imprime sur place
-function toStage(){if(innerWidth<=760)scrollTo({top:0,behavior:"smooth"})}
+function toStage(){if(innerWidth<=760){scrollTo({top:0,behavior:"smooth"});setTimeout(()=>{if(scrollY>4)scrollTo({top:0,behavior:"smooth"})},350)}}
 function choose(i){toStage();if(i>=100)return chooseAg(i-100);if(i===cur&&mode==="site")return;acur=-1;$("fiche").classList.remove("ag");const p=P[i],prev=cur;cur=i;marks();caption(i);$("go").hidden=false;$("go").href=hrefFor(p);$("back").hidden=false;
   $("coord").textContent=p.route?"le long du Transsibérien":fmtLL(p.ll);
   fiche(-1);const s={...V},dl=wrap(p.ll[1]-V.lon),fromSite=mode!=="globe",far=angDist([V.lat,V.lon],p.ll);
-  const hz=p.hz||HZ,tz=(p.tz!=null?p.tz:TZ)*D2R,lz=15*S*.5;  // même cadrage pour toutes les maquettes : le disque arrive toujours à la même taille (calé sur Terminus)  // on vise le milieu de la hauteur de la maquette
+  const hz=(p.hz||HZ)*(innerWidth<=760?.63:1),tz=(p.tz!=null?p.tz:TZ)*D2R,lz=15*S*.5;  // même cadrage pour toutes les maquettes : le disque arrive toujours à la même taille (calé sur Terminus)  // on vise le milieu de la hauteur de la maquette
   const bump=fromSite?Math.min(220,20+far*6):0,T=reduce?1:(fromSite?2300:2000);let swapped=false;mode="dive";
   if(!fromSite){placeSite(p.ll);setModel(null);V.ha=0}
   tw={t0:performance.now(),T,step(t){
