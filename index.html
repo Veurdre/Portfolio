@@ -292,7 +292,8 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
 .g3-ui .hint{margin-left:auto;font:400 10.5px var(--m);color:var(--mute);background:var(--veil);padding:6px 8px}
 .g3 .g3-lb{position:absolute;top:12px;left:12px;right:auto;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4}
 .g3 .g3-fs{position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4}
-.g3 .g3-2d{position:absolute;top:12px;left:54px;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4;font:600 9px/1 var(--f);letter-spacing:.04em}
+.g3.has2d .g3-lb{left:54px}
+.g3 .g3-2d{position:absolute;top:12px;left:12px;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4;font:600 9px/1 var(--f);letter-spacing:.04em}
 .g3 .g3-2d[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}.g3 .g3-2d:hover{border-color:var(--ink)}
 .g3 .g3-im{position:absolute;inset:0;z-index:2;background:var(--bg)}.g3 .g3-im img{width:100%;height:100%;object-fit:cover;display:block}
 .g3.r2d .g3-lab,.g3.r2d .g3-lb{display:none}
@@ -453,7 +454,7 @@ html.fs-on,html.fs-on body{overflow:hidden}
 @media (max-width:640px),(pointer:coarse) and (max-height:520px){
   .g3 .g3-lb,.g3 .g3-fs{width:26px;height:26px;top:8px}.g3 .g3-lb{left:8px}.g3 .g3-fs{right:8px}
   .g3 .g3-lb svg,.g3 .g3-fs svg{width:14px;height:14px}
-  .g3 .g3-2d{width:26px;height:26px;top:8px;left:40px;font-size:7.5px}.g3.fs .g3-2d{top:calc(8px + env(safe-area-inset-top,0px))}
+  .g3 .g3-2d{width:26px;height:26px;top:8px;left:8px;font-size:7.5px}.g3.has2d .g3-lb{left:40px}.g3.fs .g3-2d{top:calc(8px + env(safe-area-inset-top,0px))}
   .g3.fs .g3-fs,.g3.fs .g3-lb{top:calc(8px + env(safe-area-inset-top,0px))}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -1297,7 +1298,7 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
           try{localStorage.setItem("ym-3d",on?"1":"0")}catch(e){}};
         tb.onclick=function(){setM(tb.getAttribute("aria-pressed")!=="true")};
         [].forEach.call(vb,function(b){var o=b.onclick;b.onclick=function(){o();setTimeout(paint,0)}});
-        host.appendChild(tb);var m3=true;try{m3=localStorage.getItem("ym-3d")!=="0"}catch(e){}tb.setAttribute("aria-pressed","true");if(!m3)setM(false)}
+        host.appendChild(tb);host.classList.add("has2d");var m3=true;try{m3=localStorage.getItem("ym-3d")!=="0"}catch(e){}tb.setAttribute("aria-pressed","true");if(!m3)setM(false)}
       if(lb&&g3.labels){var lon=true;try{lon=localStorage.getItem("ym-labels")!=="0"}catch(e){}lb.setAttribute("aria-pressed",lon?"true":"false");g3.labels(lon);
         lb.onclick=function(){lon=!lon;lb.setAttribute("aria-pressed",lon?"true":"false");g3.labels(lon);try{localStorage.setItem("ym-labels",lon?"1":"0")}catch(e){}}}
       else if(lb)lb.remove();
