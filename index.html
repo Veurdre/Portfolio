@@ -295,7 +295,8 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
 .g3.has2d .g3-lb{left:54px}
 .g3 .g3-2d{position:absolute;top:12px;left:12px;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4;font:600 9px/1 var(--f);letter-spacing:.04em}
 .g3 .g3-2d[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}.g3 .g3-2d:hover{border-color:var(--ink)}
-.g3 .g3-im{position:absolute;inset:0;z-index:2;background:var(--bg)}.g3 .g3-im img{width:100%;height:100%;object-fit:cover;display:block}
+.g3 .g3-im{position:absolute;inset:0;z-index:2;background:var(--bg)}.g3 .g3-im img{animation:g3in .9s ease both;width:100%;height:100%;object-fit:cover;display:block}
+@keyframes g3in{from{opacity:0}to{opacity:1}}
 .g3.r2d .g3-lab,.g3.r2d .g3-lb{display:none}
 .g3.fs .g3-2d{top:calc(12px + env(safe-area-inset-top,0px))}
 .g3 .g3-fs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.4}.g3 .g3-fs .i{display:none}.g3 .g3-fs[aria-pressed="true"] .o{display:none}.g3 .g3-fs[aria-pressed="true"] .i{display:block}
@@ -1296,6 +1297,10 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
         var setM=function(on){tb.setAttribute("aria-pressed",on?"true":"false");host.classList.toggle("r2d",!on);
           if(!on){if(!im){im=document.createElement("div");im.className="g3-im";host.insertBefore(im,host.firstChild)}paint()}else if(im){im.remove();im=null}
           try{localStorage.setItem("ym-3d",on?"1":"0")}catch(e){}};
+        var lastK=null,tch=0;host.addEventListener("pointerdown",function(){tch=performance.now()},true);
+        var tm=setInterval(function(){if(!document.body.contains(host)){clearInterval(tm);return}
+          if(im){var k=cur();if(k!==lastK){lastK=k;paint()}}
+          if(!UU.auto&&im&&!document.hidden&&performance.now()-tch>8000&&(performance.now()-(host.__sl||0))>6000){var r=host.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;host.__sl=performance.now();var i=0;[].forEach.call(vb,function(x,j){if(x.getAttribute("aria-pressed")==="true")i=j});var n=vb[(i+1)%vb.length];var o=n.onclick;n.onclick&&n.onclick()}},700);
         tb.onclick=function(){setM(tb.getAttribute("aria-pressed")!=="true")};
         [].forEach.call(vb,function(b){var o=b.onclick;b.onclick=function(){o();setTimeout(paint,0)}});
         host.appendChild(tb);host.classList.add("has2d");var m3=true;try{m3=localStorage.getItem("ym-3d")!=="0"}catch(e){}tb.setAttribute("aria-pressed","true");if(!m3)setM(false)}
