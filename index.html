@@ -407,6 +407,8 @@ html.fs-on,html.fs-on body{overflow:hidden}
   .bar nav{border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
   .bar nav a{letter-spacing:.08em;font-size:min(10px,2.6vw);white-space:nowrap;flex:0 0 auto}
   .pj-head .sub span:last-child{display:none}
+  .pj-bk button{white-space:nowrap}.pj-bk .bk-x{display:none}
+  .pj-sec{flex-direction:column;gap:6px}.pj-sec b{white-space:nowrap;letter-spacing:.22em}.pj-sec span{font-size:9.5px;line-height:1.4;letter-spacing:0}
   .pf-tl{display:none!important}
   .home #gbox .stage{-webkit-mask-image:none;mask-image:none}
   .g3-lab b{font-size:8px;letter-spacing:.12em;padding:3px 5px 2px}
@@ -1205,7 +1207,7 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
     else if(it.g3){var G=G3UI[it.g3];html+='<div class="g3" id="g3"><div class="g3-load"'+(G3IMG[it.g3]?' style="background:url(img/rendu/'+G3IMG[it.g3]+') center/cover">':'>Chargement de la maquette…')+'</div><div class="g3-ui">'+G.v.map(function(v,i){return '<button type="button" data-v="'+v[0]+'" aria-pressed="'+(i?'false':'true')+'">'+v[1]+'</button>'}).join("")+'<button type="button" class="g3-lb" data-l aria-pressed="true" aria-label="Afficher ou masquer les annotations" title="Afficher ou masquer les annotations"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="5" cy="15" r="2.2"/><path d="M6.6 13.4 11 6h6.5"/></svg></button>'+'<span class="hint">glisser pour tourner · molette pour zoomer</span></div></div><div class="g3-note" aria-hidden="true"></div>';}
     if(it.eu)html+='<div class="pj-eu"><i role="img" aria-label="Europan"></i><div>'+it.eu.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+' <span aria-hidden="true">↗</span></a>'}).join("")+'</div></div>';
     if(it.txt)html+='<div class="pj-txt" lang="fr">'+bloc(it.txt,it.g3,"fr")+'</div>'+(it.txtEn?'<div class="pj-txt" lang="en">'+bloc(it.txtEn,it.g3,"en")+'</div>':'');
-    if(it.bk!=null)html+='<p class="pj-bk"><button type="button" data-bk="'+it.bk+'">Feuilleter le book PFE, avec toute l’étude urbaine <span aria-hidden="true">→</span></button></p>';
+    if(it.bk!=null)html+='<p class="pj-bk"><button type="button" data-bk="'+it.bk+'">Feuilleter le book PFE<span class="bk-x">, avec toute l’étude urbaine</span> <span aria-hidden="true">→</span></button></p>';
     html+='<div class="pj-sec"><b>'+(it.o?'Planches de rendu':'Pages du book portfolio')+'</b><span>'+it.p.length+(it.o?' planche'+(it.p.length>1?'s':'')+' originale'+(it.p.length>1?'s':''):' page'+(it.p.length>1?'s':''))+(it.fmt?' · '+it.fmt:'')+' · cliquer pour agrandir</span></div><div class="panels'+(it.row?' row':'')+(it.lay?' '+it.lay:'')+'" id="panels"></div>';
     html+='<div class="pj-nav">'+(prev?'<a href="'+hrefOf(prev)+'">← '+prev.t+'<span>'+prev.ctx+'</span></a>':'')+(next?'<a class="nx" href="'+hrefOf(next)+'">'+next.t+' →<span>'+next.ctx+'</span></a>':'')+'</div>';
     P.innerHTML=html;
