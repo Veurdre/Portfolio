@@ -429,12 +429,14 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
 #gbox .list h3:first-child{margin-top:0}
 
 /* familles : interrupteur afficher / masquer sur le globe */
-#gbox .list h3 .tg{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;font:inherit;letter-spacing:inherit;color:inherit;transition:opacity .25s}
+#gbox .list h3 .tg{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;padding:4px 0 4px 8px;font:inherit;letter-spacing:inherit;color:inherit;transition:opacity .25s}
 #gbox .list h3 .tg:hover,#gbox .list h3 .tg:focus-visible{color:var(--ink)}#gbox .list h3 .tg:focus-visible{outline:2px solid var(--brick);outline-offset:3px}
 #gbox .list h3 .tg u{margin-left:auto;width:17px;height:9px;border:1px solid currentColor;border-radius:9px;position:relative;box-sizing:border-box;flex:none}
 #gbox .list h3 .tg u::after{content:"";position:absolute;top:1.5px;left:9.5px;width:4px;height:4px;border-radius:50%;background:currentColor;transition:left .2s}
 #gbox .list h3 .tg[aria-pressed="false"]{opacity:.45}#gbox .list h3 .tg[aria-pressed="false"] u::after{left:1.5px}
-#gbox .list .off .it{opacity:.4}#gbox .list #cA.off{opacity:.55;transition:opacity .25s}#gbox .list #cA.off:hover{opacity:.85}
+#gbox .list .off .it{opacity:.4}#gbox .list #cA.off{opacity:.55;transition:opacity .25s}#gbox .list #cA.off:hover{opacity:.85}#gbox .list .fold{display:none}
+#gbox .list h3 .fo{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;flex:1;min-width:0;font:inherit;letter-spacing:inherit;color:inherit}#gbox .list h3 .fo:hover,#gbox .list h3 .fo:focus-visible{color:var(--ink)}#gbox .list h3 .fo:focus-visible{outline:2px solid var(--brick);outline-offset:3px}
+#gbox .list h3 .fo::after{content:"";margin-left:2px;width:5px;height:5px;border-right:1.2px solid currentColor;border-bottom:1.2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .2s}#gbox .list h3 .fo[aria-expanded="false"]::after{transform:rotate(-45deg)}
 #gbox .list h3.a i{width:6px;height:6px;border-radius:0;background:var(--agc);transform:rotate(45deg);margin:0 1px}
 #gbox .list h3.a em{font-style:normal;font-family:var(--m);letter-spacing:0;color:var(--mute)}
 /* la molette */
@@ -610,7 +612,7 @@ body:has(#v-accueil:not([hidden])) > footer{display:none}
     <h1 class="sr">Yves Micault, architecte</h1>
     <div>
     <div class="gbox" id="gbox">
-      <div class="list" id="list"><h3><button type="button" class="tg" data-f="e" aria-pressed="true" title="Afficher ou masquer sur le globe"><i></i>Études<u></u></button></h3><div id="cE"></div><h3 class="c"><button type="button" class="tg" data-f="c" aria-pressed="true" title="Afficher ou masquer sur le globe"><i></i>Concours<u></u></button></h3><div id="cC"></div><h3 class="a"><button type="button" class="tg" data-f="a" aria-pressed="false" title="Afficher ou masquer sur le globe"><i></i>Agence <em id="agN"></em><u></u></button></h3><div id="cA" class="off" aria-label="Projets d’agence"></div></div>
+      <div class="list" id="list"><h3><button type="button" class="fo" data-f="e" aria-expanded="true" title="Déplier ou replier la liste"><i></i>Études</button><button type="button" class="tg" data-f="e" aria-pressed="true" aria-label="Afficher sur le globe" title="Afficher ou masquer sur le globe"><u></u></button></h3><div id="cE"></div><h3 class="c"><button type="button" class="fo" data-f="c" aria-expanded="true" title="Déplier ou replier la liste"><i></i>Concours</button><button type="button" class="tg" data-f="c" aria-pressed="true" aria-label="Afficher sur le globe" title="Afficher ou masquer sur le globe"><u></u></button></h3><div id="cC"></div><h3 class="a"><button type="button" class="fo" data-f="a" aria-expanded="false" title="Déplier ou replier la liste"><i></i>Agence <em id="agN"></em></button><button type="button" class="tg" data-f="a" aria-pressed="false" aria-label="Afficher sur le globe" title="Afficher ou masquer sur le globe"><u></u></button></h3><div id="cA" class="off fold" aria-label="Projets d’agence"></div></div>
       <div class="stage" id="stage">
         <div class="gl" id="gl"></div>
         <canvas id="fx" aria-hidden="true"></canvas>
@@ -1468,7 +1470,7 @@ fetch("data/globe/agence.json").then(r=>r.json()).then(j=>{AG=j.p;$("agN").textC
   const rowH=innerWidth<=760?28:30,items=AG.map(p=>({html:"<i>"+p.y.slice(0,4)+"</i><b>"+p.t+"</b><span>"+(p.t!==p.c?p.c:"")+"</span>"}));
   let nRows=0;
   window.agRows=function(){const L=document.querySelector("#gbox .list");let r;
-    if(innerWidth>1060&&innerWidth>760&&L&&L.style.height){const A=$("cA"),free=L.clientHeight-A.offsetTop-6;r=Math.floor(free/(rowH*.66))}
+    if(innerWidth>1060&&innerWidth>760&&L&&L.style.height){const H3=L.querySelector("h3.a"),free=L.clientHeight-(H3.offsetTop+H3.offsetHeight)-10;r=Math.floor(free/(rowH*.66))}
     else r=innerWidth<=760?7:innerHeight<760?7:innerHeight<900?9:11;
     r=Math.max(5,Math.min(31,r));return r%2?r:r-1};
   window.agBuild=function(){const rows=window.agRows();if(rows===nRows)return;nRows=rows;
@@ -1479,6 +1481,7 @@ fetch("data/globe/agence.json").then(r=>r.json()).then(j=>{AG=j.p;$("agN").textC
     if(keep)WH.go(keep);
     C.addEventListener("pointerleave",()=>{wIn=false;setHov(-1)});C.addEventListener("pointerenter",()=>{wIn=true;setHov(100+WH.get())});C.addEventListener("blur",()=>setHov(-1))};
   agBuild();size()});
+document.querySelectorAll("#list .fo").forEach(b=>b.addEventListener("click",()=>{const o=b.getAttribute("aria-expanded")!=="true";b.setAttribute("aria-expanded",o);$({e:"cE",c:"cC",a:"cA"}[b.dataset.f]).classList.toggle("fold",!o);fitStage()}));
 document.querySelectorAll("#list .tg").forEach(b=>b.addEventListener("click",()=>{const f=b.dataset.f,on=!VIS[f];VIS[f]=on?1:0;b.setAttribute("aria-pressed",on);$({e:"cE",c:"cC",a:"cA"}[f]).classList.toggle("off",!on)}));
 
 
