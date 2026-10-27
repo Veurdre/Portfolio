@@ -19,9 +19,9 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
-.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1280px;margin:0 auto}
-:root{--wide:1720px}   /* accueil plus large (Yves, 26/10) : le globe a de la place sur un écran 16:9 */
+.gut{padding-left:max(clamp(16px,3vw,40px),env(safe-area-inset-left,0px));padding-right:max(clamp(16px,3vw,40px),env(safe-area-inset-right,0px))}
+.wrap{max-width:var(--wide);margin:0 auto}
+:root{--wide:1480px}   /* accueil plus large (Yves, 26/10) : le globe a de la place sur un écran 16:9 */
 body:has(.home:not([hidden])) .bar .wrap{max-width:var(--wide)}
 a{color:inherit}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}
@@ -561,6 +561,7 @@ body:has(#v-accueil:not([hidden])) > footer{display:none}
   .home .wrap.hg > div:last-child{position:absolute;inset:0;display:block}
   .home #gbox{position:absolute;inset:0;display:block;padding:0}
   .home #gbox .list{position:absolute;left:0;top:clamp(12px,3vh,28px);width:240px;max-height:calc(100% - 24px);overflow-y:auto}
+  .home #gbox .list.full{overflow:hidden;display:flex;flex-direction:column}.home #gbox .list.full #cA{margin-top:4px}
   .home #gbox .side{position:absolute;right:0;top:clamp(12px,3vh,28px);bottom:12px;width:230px;margin:0;overflow-y:auto}
   .home #gbox .stage{position:absolute;max-width:none;aspect-ratio:auto;margin:0}}
 /* téléphone : tout en colonne, globe d'abord, taille posée en JS (Safari) */
@@ -1464,10 +1465,20 @@ function ficheAg(k){const F=$("fiche");gallery(-1);if(k<0){F.classList.remove("o
   F.innerHTML="<p>Agence · Hamonic+Masson</p>"+(src?'<div class="agf'+(conf?" conf":"")+'"><img src="'+src+'" alt="">'+(conf?'<span class="stamp"><b>Confidentiel</b><small>non publié par l’agence</small></span>':"")+"</div>":"")+"<dl>"+rows.map(([a,b])=>"<div><dt>"+a+"</dt><dd>"+b+"</dd></div>").join("")+"</dl>"+(p.u?'<a class="agl" href="'+HMU+p.u+'" target="_blank" rel="noopener">Fiche sur hamonic-masson.com ↗</a>':"");
   F.classList.add("on","ag");requestAnimationFrame(()=>{F.classList.add("vis");size()})}
 fetch("data/globe/agence.json").then(r=>r.json()).then(j=>{AG=j.p;$("agN").textContent=AG.length;const C=$("cA");
-  const rows=innerWidth<=760?7:innerHeight<760?7:innerHeight<900?9:11;
-  WH=YMWheel(C,AG.map(p=>({html:"<i>"+p.y.slice(0,4)+"</i><b>"+p.t+"</b><span>"+(p.t!==p.c?p.c:"")+"</span>"})),{rows,rowH:innerWidth<=760?28:30,
-    onCenter:k=>{if(wIn||document.activeElement===C)setHov(100+k)},onPick:k=>chooseAg(k)});
-  C.addEventListener("pointerleave",()=>{wIn=false;setHov(-1)});C.addEventListener("pointerenter",()=>{wIn=true;setHov(100+WH.get())});C.addEventListener("blur",()=>setHov(-1));size()});
+  const rowH=innerWidth<=760?28:30,items=AG.map(p=>({html:"<i>"+p.y.slice(0,4)+"</i><b>"+p.t+"</b><span>"+(p.t!==p.c?p.c:"")+"</span>"}));
+  let nRows=0;
+  window.agRows=function(){const L=document.querySelector("#gbox .list");let r;
+    if(innerWidth>1060&&innerWidth>760&&L&&L.style.height){const A=$("cA"),free=L.clientHeight-A.offsetTop-6;r=Math.floor(free/(rowH*.66))}
+    else r=innerWidth<=760?7:innerHeight<760?7:innerHeight<900?9:11;
+    r=Math.max(5,Math.min(31,r));return r%2?r:r-1};
+  window.agBuild=function(){const rows=window.agRows();if(rows===nRows)return;nRows=rows;
+    let C=$("cA");const keep=WH?WH.get():0,off=C.classList.contains("off");
+    if(WH){const n=C.cloneNode(false);n.className="";n.innerHTML="";n.removeAttribute("style");n.removeAttribute("tabindex");n.removeAttribute("role");C.replaceWith(n);C=n}
+    if(off)C.classList.add("off");
+    WH=YMWheel(C,items,{rows,rowH,onCenter:k=>{if(wIn||document.activeElement===C)setHov(100+k)},onPick:k=>chooseAg(k)});
+    if(keep)WH.go(keep);
+    C.addEventListener("pointerleave",()=>{wIn=false;setHov(-1)});C.addEventListener("pointerenter",()=>{wIn=true;setHov(100+WH.get())});C.addEventListener("blur",()=>setHov(-1))};
+  agBuild();size()});
 document.querySelectorAll("#list .tg").forEach(b=>b.addEventListener("click",()=>{const f=b.dataset.f,on=!VIS[f];VIS[f]=on?1:0;b.setAttribute("aria-pressed",on);$({e:"cE",c:"cC",a:"cA"}[f]).classList.toggle("off",!on)}));
 
 
@@ -1626,6 +1637,7 @@ function fitStage(){if(!stageEl)return;const g=$("gbox");
   if(wide)["top","left","width","right","bottom"].forEach(k=>sd.style[k]="");
   else{const t=L.offsetTop+L.offsetHeight+16;Object.assign(sd.style,{left:"0px",right:"auto",width:lw+"px",top:t+"px",bottom:"12px"});L.style.maxHeight=""}
   const x0=lw+gap,x1=W-(wide?sd.offsetWidth+gap:0),pad=16,s=Math.floor(Math.max(160,Math.min(x1-x0,H-2*pad)));
+  if(wide&&innerWidth>1060){const t=Math.round((H-s)/2);Object.assign(L.style,{top:t+"px",height:s+"px",maxHeight:"none"});L.classList.add("full");if(window.agBuild)agBuild()}else{["top","height","maxHeight"].forEach(k=>L.style[k]="");L.classList.remove("full")}
   Object.assign(stageEl.style,{width:s+"px",height:s+"px",left:Math.round(x0+(x1-x0-s)/2)+"px",top:Math.round((H-s)/2)+"px"})}
 new ResizeObserver(fitStage).observe($("gbox"));addEventListener("resize",fitStage);fitStage();
 function resetGlobe(){tw=null;mode="globe";cur=-1;acur=-1;$("fiche").classList.remove("ag");hov=-1;marks();caption(-1);fiche(-1);$("go").hidden=true;$("back").hidden=true;$("coord").textContent="";setModel(null);
