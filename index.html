@@ -1293,7 +1293,7 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
         var rfile=function(k){return name==="agri"&&k==="ensemble"?"agri_ensemble.jpg?v=2":name+"_"+k+".jpg"+(name==="equilibrium"?(k==="ciel"?"?v=2":(k==="arrivee")?"?v=3":(k==="pointe"||k==="montee")?"?v=4":""):"")};
         var tb=document.createElement("button");tb.type="button";tb.className="g3-2d";tb.textContent="3D";tb.title="Afficher la maquette 3D ou les rendus";tb.setAttribute("aria-label","Maquette 3D ou rendus");
         var im=null,cur=function(){var b=host.querySelector(".g3-ui button[data-v][aria-pressed=\"true\"]");return b?b.dataset.v:UU.v[0][0]};
-        var paint=function(){if(!im)return;var k=cur();im.innerHTML='<img alt="" src="img/rendu/'+rfile(k)+'">';im.firstChild.onerror=function(){im.innerHTML=""}};
+        var paint=function(){if(!im)return;var k=cur(),old=[].slice.call(im.children),n=new Image();n.alt="";n.style.cssText="position:absolute;inset:0;animation:g3in 1.2s ease both";n.onload=function(){old.forEach(function(o){o.style.animation="none";o.style.zIndex=0});n.style.zIndex=1;im.appendChild(n);setTimeout(function(){old.forEach(function(o){o.remove()})},1300)};n.onerror=function(){};n.src="img/rendu/"+rfile(k)};
         var setM=function(on){tb.setAttribute("aria-pressed",on?"true":"false");host.classList.toggle("r2d",!on);
           if(!on){if(!im){im=document.createElement("div");im.className="g3-im";host.insertBefore(im,host.firstChild)}paint()}else if(im){im.remove();im=null}
           try{localStorage.setItem("ym-3d",on?"1":"0")}catch(e){}};
