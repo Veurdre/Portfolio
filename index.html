@@ -400,6 +400,7 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
   .bar nav::-webkit-scrollbar{display:none}
   .bar nav a{letter-spacing:.08em;font-size:min(10px,2.6vw);white-space:nowrap;flex:0 0 auto}
   .pj-head .sub span:last-child{display:none}
+  .pf-tl{display:none!important}
   .g3{height:auto;min-height:0;aspect-ratio:3/2;width:100%;max-width:100%;min-width:0;contain:inline-size}
   .g3-ui{max-width:calc(100% - 12px)}
   .g3-ui{left:6px;right:6px;bottom:6px;flex-wrap:nowrap;overflow-x:auto;gap:5px;scrollbar-width:none;pointer-events:auto}
@@ -1551,7 +1552,7 @@ host.addEventListener("pointerdown",e=>{if(e.isPrimary){pts.clear();pinch=null}p
 addEventListener("pointercancel",e=>{if(pts.delete(e.pointerId)&&!pts.size){pinch=null;dragging=false}},true);
 addEventListener("pointerup",e=>{if(!pts.has(e.pointerId))return;setTimeout(()=>{if(pts.delete(e.pointerId)&&!pts.size){pinch=null;dragging=false;host.classList.remove("grab")}},0)},true);
 host.addEventListener("pointermove",e=>{if(pts.has(e.pointerId))pts.set(e.pointerId,[e.clientX,e.clientY]);
-  if(pinch&&pts.size===2){if(mode!=="dive"){const h=pinch.h*pinch.d/pd();V.h=mode==="globe"?clamp(h,12,H0):clamp(h,8,90)}return}
+  if(pinch&&pts.size===2){if(mode!=="dive"){const h=pinch.h*pinch.d/pd();if(mode==="site"&&h>101){pinch=null;pts.clear();dragging=false;moved=99;back();return}V.h=mode==="globe"?clamp(h,12,H0):clamp(h,8,90)}return}
   if(dragging){const dx=e.clientX-px,dy=e.clientY-py;moved+=Math.abs(dx)+Math.abs(dy);px=e.clientX;py=e.clientY;
     if(mode==="globe"&&moved>3){host.classList.add("grab");const k=.22*V.h/H0;V.lon-=dx*k;V.lat=clamp(V.lat+dy*k,-60,75)}
     else if(mode==="site"&&moved>3){spin.rotation.y+=dx*.01}return}
