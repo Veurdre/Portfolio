@@ -290,7 +290,13 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
 .g3-ui button:hover{border-color:var(--ink)}
 .g3-ui button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .g3-ui .hint{margin-left:auto;font:400 10.5px var(--m);color:var(--mute);background:var(--veil);padding:6px 8px}
-.g3 .g3-lb{position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4}
+.g3 .g3-lb{position:absolute;top:12px;left:12px;right:auto;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4}
+.g3 .g3-fs{position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;display:grid;place-items:center;pointer-events:auto;background:var(--veil);border:1px solid var(--line);border-radius:99px;color:var(--mute);z-index:4}
+.g3 .g3-fs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.4}.g3 .g3-fs .i{display:none}.g3 .g3-fs[aria-pressed="true"] .o{display:none}.g3 .g3-fs[aria-pressed="true"] .i{display:block}
+.g3 .g3-fs:hover{border-color:var(--ink);color:var(--ink)}
+.g3.fs{position:fixed!important;inset:0;width:100vw!important;max-width:none!important;height:100vh!important;height:100dvh!important;min-height:0!important;aspect-ratio:auto!important;margin:0!important;z-index:300;contain:none!important}
+.g3.fs .g3-ui{bottom:calc(12px + env(safe-area-inset-bottom,0px))}.g3.fs .g3-fs,.g3.fs .g3-lb{top:calc(12px + env(safe-area-inset-top,0px))}
+html.fs-on,html.fs-on body{overflow:hidden}
 .g3 .g3-lb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.4}.g3 .g3-lb circle{fill:currentColor;stroke:none}
 .g3 .g3-lb:hover{border-color:var(--ink);color:var(--ink)}.g3 .g3-lb[aria-pressed="true"]{color:var(--brick);border-color:var(--brick)}
 .g3 .g3-lb[aria-pressed="false"] path{stroke-dasharray:2 2}
@@ -1253,6 +1259,10 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
       [].forEach.call(vb,function(b){b.onclick=function(){go(b)}});
       if(G3UI[name].auto&&!keep)autoPlay(host,vb,go);
       var lb=host.querySelector(".g3-ui button[data-l]");if(lb)host.appendChild(lb);
+      if(!host.querySelector(".g3-fs")){var fb=document.createElement("button");fb.type="button";fb.className="g3-fs";fb.setAttribute("aria-pressed","false");fb.setAttribute("aria-label","Plein écran");fb.title="Plein écran";
+        fb.innerHTML='<svg viewBox="0 0 20 20" aria-hidden="true"><path class="o" d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5"/><path class="i" d="M8 3v5H3M12 8V3M17 8h-5M12 17v-5h5M3 12h5v5"/></svg>';
+        fb.onclick=function(){var on=!host.classList.contains("fs");if(on){fb.__ph=document.createComment("g3");host.parentNode.insertBefore(fb.__ph,host);document.body.appendChild(host)}else if(fb.__ph&&fb.__ph.parentNode){fb.__ph.parentNode.insertBefore(host,fb.__ph);fb.__ph.remove();fb.__ph=null}host.classList.toggle("fs",on);document.documentElement.classList.toggle("fs-on",on);fb.setAttribute("aria-pressed",on);fb.setAttribute("aria-label",on?"Quitter le plein écran":"Plein écran");window.dispatchEvent(new Event("resize"))};
+        host.appendChild(fb)}
       if(lb&&g3.labels){var lon=true;try{lon=localStorage.getItem("ym-labels")!=="0"}catch(e){}lb.setAttribute("aria-pressed",lon?"true":"false");g3.labels(lon);
         lb.onclick=function(){lon=!lon;lb.setAttribute("aria-pressed",lon?"true":"false");g3.labels(lon);try{localStorage.setItem("ym-labels",lon?"1":"0")}catch(e){}}}
       else if(lb)lb.remove();
@@ -1437,6 +1447,7 @@ function caption(i){if(i<0){$("tit").textContent="";$("sub").textContent="";retu
 // la plongée : le globe tourne vers le lieu, on descend, la vue s'incline et la maquette s'imprime sur place
 const WARM={varese:["varese.json","varese_env.json"],agri:["agri.json","agri_life.json?v=117"],terminus:["terminus.json?v=120"],elle:["elle.json"],ventres:["ventres.json?v=6"],crank:["crank.json?v=1"],siberian:["siberian.json?v=3"],equilibrium:["equilibrium.json?v=1"]},warmed={};
 function warm(k){if(warmed[k]||!WARM[k])return;warmed[k]=1;WARM[k].forEach(f=>{try{fetch("data/"+f,{priority:"low"}).catch(()=>{})}catch(e){}})}   // précharge la maquette dès qu'un projet est survolé ou choisi
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){var f=document.querySelector(".g3.fs .g3-fs");if(f)f.click()}});
 function toStage(){if(innerWidth<=760){scrollTo({top:0,behavior:"smooth"});setTimeout(()=>{if(scrollY>4)scrollTo({top:0,behavior:"smooth"})},350)}}
 function choose(i){toStage();if(P[i])warm(P[i].k);if(i>=100)return chooseAg(i-100);if(i===cur&&mode==="site")return;acur=-1;$("fiche").classList.remove("ag");const p=P[i],prev=cur;cur=i;marks();caption(i);$("go").hidden=false;$("go").href=hrefFor(p);$("back").hidden=false;
   $("coord").textContent=p.route?"le long du Transsibérien":fmtLL(p.ll);
