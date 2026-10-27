@@ -1,5 +1,4 @@
-<!doctype html><html><head>
-<meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Yves Micault">
 <title>Archive Yves Micault</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1258,7 +1257,7 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
   // la fenêtre 3D tient en entier sous le titre à l'ouverture (iPad : elle était coupée en bas)
   function fitG3(){var h=$("g3");if(!h)return;var top=h.getBoundingClientRect().top+scrollY,v=(window.visualViewport&&visualViewport.height)||innerHeight;
     if(innerWidth<=640){h.style.height="";return}
-    h.style.height=Math.round(Math.max(380,Math.min(h.clientWidth*2/3,Math.max(560,v-110))))+"px"}
+    h.style.height=Math.round(Math.max(380,Math.min(h.clientWidth*.615,Math.max(560,v-110))))+"px"}
   addEventListener("resize",fitG3);
   function mount3d(name){
     var host=$("g3");fitG3();requestAnimationFrame(fitG3);setTimeout(fitG3,400);
