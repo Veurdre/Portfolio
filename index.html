@@ -1,5 +1,6 @@
 <!doctype html><html><head>
 <meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Yves Micault">
 <title>Archive Yves Micault</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -433,6 +434,15 @@ html.fs-on,html.fs-on body{overflow:hidden}
   .arrow{display:none}
   .v-strip{display:none}
 }
+
+@media (pointer:coarse) and (max-height:520px){
+  .g3-lab b{font-size:8px;letter-spacing:.12em;padding:3px 5px 2px}
+  .g3-lab span{display:none}
+  .g3-lab::after{height:calc(var(--st,26px)*.5)}
+  .g3-ui .hint{display:none}
+  .g3-ui button{padding:6px 10px;font-size:8.5px;letter-spacing:.1em}
+}
+@media (hover:none){.g3-ui .hint{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 /* le globe de l'accueil : trait gris chaud le jour, bleu la nuit ; vert = la touche colorée des maquettes */
@@ -1261,7 +1271,7 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
       var lb=host.querySelector(".g3-ui button[data-l]");if(lb)host.appendChild(lb);
       if(!host.querySelector(".g3-fs")){var fb=document.createElement("button");fb.type="button";fb.className="g3-fs";fb.setAttribute("aria-pressed","false");fb.setAttribute("aria-label","Plein écran");fb.title="Plein écran";
         fb.innerHTML='<svg viewBox="0 0 20 20" aria-hidden="true"><path class="o" d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5"/><path class="i" d="M8 3v5H3M12 8V3M17 8h-5M12 17v-5h5M3 12h5v5"/></svg>';
-        fb.onclick=function(){var on=!host.classList.contains("fs");if(on){fb.__ph=document.createComment("g3");host.parentNode.insertBefore(fb.__ph,host);document.body.appendChild(host)}else if(fb.__ph&&fb.__ph.parentNode){fb.__ph.parentNode.insertBefore(host,fb.__ph);fb.__ph.remove();fb.__ph=null}host.classList.toggle("fs",on);document.documentElement.classList.toggle("fs-on",on);fb.setAttribute("aria-pressed",on);fb.setAttribute("aria-label",on?"Quitter le plein écran":"Plein écran");window.dispatchEvent(new Event("resize"))};
+        fb.onclick=function(){var on=!host.classList.contains("fs");try{var rf=host.requestFullscreen||host.webkitRequestFullscreen;if(on&&rf&&!document.fullscreenElement&&!document.webkitFullscreenElement)rf.call(host);else if(!on&&(document.fullscreenElement||document.webkitFullscreenElement))(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(_){}if(on){fb.__ph=document.createComment("g3");host.parentNode.insertBefore(fb.__ph,host);document.body.appendChild(host)}else if(fb.__ph&&fb.__ph.parentNode){fb.__ph.parentNode.insertBefore(host,fb.__ph);fb.__ph.remove();fb.__ph=null}host.classList.toggle("fs",on);document.documentElement.classList.toggle("fs-on",on);fb.setAttribute("aria-pressed",on);fb.setAttribute("aria-label",on?"Quitter le plein écran":"Plein écran");window.dispatchEvent(new Event("resize"))};
         host.appendChild(fb)}
       if(lb&&g3.labels){var lon=true;try{lon=localStorage.getItem("ym-labels")!=="0"}catch(e){}lb.setAttribute("aria-pressed",lon?"true":"false");g3.labels(lon);
         lb.onclick=function(){lon=!lon;lb.setAttribute("aria-pressed",lon?"true":"false");g3.labels(lon);try{localStorage.setItem("ym-labels",lon?"1":"0")}catch(e){}}}
