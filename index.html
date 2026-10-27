@@ -1631,14 +1631,15 @@ const home=$("v-accueil");
 const stageEl=document.querySelector("#gbox .stage");
 function fitStage(){if(!stageEl)return;const g=$("gbox");
   if(innerWidth<=760){["left","top"].forEach(k=>stageEl.style[k]="");["top","left","width","right","bottom"].forEach(k=>g.querySelector(".side").style[k]="");
-    const w=g.clientWidth||document.documentElement.clientWidth-32,s=Math.floor(Math.max(200,Math.min(w,innerHeight*.62)));stageEl.style.width=stageEl.style.height=s+"px";return}
+    $("dsv").style.clipPath="";const w=g.clientWidth||document.documentElement.clientWidth-32,s=Math.floor(Math.max(200,Math.min(w,innerHeight*.62)));stageEl.style.width=stageEl.style.height=s+"px";return}
   const W=g.clientWidth,H=g.clientHeight;if(!W||!H)return;
   const L=g.querySelector(".list"),sd=g.querySelector(".side"),gap=24,lw=L.offsetWidth,wide=innerWidth>1060;
   if(wide)["top","left","width","right","bottom"].forEach(k=>sd.style[k]="");
   else{const t=L.offsetTop+L.offsetHeight+16;Object.assign(sd.style,{left:"0px",right:"auto",width:lw+"px",top:t+"px",bottom:"12px"});L.style.maxHeight=""}
   const x0=lw+gap,x1=W-(wide?sd.offsetWidth+gap:0),pad=16,s=Math.floor(Math.max(160,Math.min(x1-x0,H-2*pad)));
   if(wide&&innerWidth>1060){const t=sd.offsetTop;Object.assign(L.style,{top:t+"px",height:(H-t-12)+"px",maxHeight:"none"});L.classList.add("full");if(window.agBuild)agBuild()}else{["top","height","maxHeight"].forEach(k=>L.style[k]="");L.classList.remove("full")}
-  Object.assign(stageEl.style,{width:s+"px",height:s+"px",left:Math.round(x0+(x1-x0-s)/2)+"px",top:Math.round((H-s)/2)+"px"})}
+  Object.assign(stageEl.style,{width:s+"px",height:s+"px",left:Math.round(x0+(x1-x0-s)/2)+"px",top:Math.round((H-s)/2)+"px"});
+  $("dsv").style.clipPath="inset(0 "+Math.max(0,Math.round(W-x1))+"px 0 "+Math.round(x0)+"px)"}
 new ResizeObserver(fitStage).observe($("gbox"));addEventListener("resize",fitStage);fitStage();
 function resetGlobe(){tw=null;mode="globe";cur=-1;acur=-1;$("fiche").classList.remove("ag");hov=-1;marks();caption(-1);fiche(-1);$("go").hidden=true;$("back").hidden=true;$("coord").textContent="";setModel(null);
   Object.assign(V,{lat:46,lon:14,h:H0,tau:0,lk:0,ha:0});spin.rotation.y=0}
