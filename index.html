@@ -443,6 +443,12 @@ html.fs-on,html.fs-on body{overflow:hidden}
   .g3-ui button{padding:6px 10px;font-size:8.5px;letter-spacing:.1em}
 }
 @media (hover:none){.g3-ui .hint{display:none}}
+
+@media (max-width:640px),(pointer:coarse) and (max-height:520px){
+  .g3 .g3-lb,.g3 .g3-fs{width:26px;height:26px;top:8px}.g3 .g3-lb{left:8px}.g3 .g3-fs{right:8px}
+  .g3 .g3-lb svg,.g3 .g3-fs svg{width:14px;height:14px}
+  .g3.fs .g3-fs,.g3.fs .g3-lb{top:calc(8px + env(safe-area-inset-top,0px))}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 /* le globe de l'accueil : trait gris chaud le jour, bleu la nuit ; vert = la touche colorée des maquettes */
