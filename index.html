@@ -1258,7 +1258,7 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
   // la fenêtre 3D tient en entier sous le titre à l'ouverture (iPad : elle était coupée en bas)
   function fitG3(){var h=$("g3");if(!h)return;var top=h.getBoundingClientRect().top+scrollY,v=(window.visualViewport&&visualViewport.height)||innerHeight;
     if(innerWidth<=640){h.style.height="";return}
-    h.style.height=Math.round(Math.max(300,Math.min(720,v-top-16)))+"px"}
+    h.style.height=Math.round(Math.max(380,Math.min(h.clientWidth*2/3,Math.max(560,v-110))))+"px"}
   addEventListener("resize",fitG3);
   function mount3d(name){
     var host=$("g3");fitG3();requestAnimationFrame(fitG3);setTimeout(fitG3,400);
