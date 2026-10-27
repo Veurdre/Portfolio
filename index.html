@@ -396,9 +396,15 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
 }
 @media (max-width:640px){
   .bar .wrap{grid-template-columns:minmax(0,1fr) auto;height:auto;padding:12px 0 8px;gap:8px}
-  .bar nav{grid-column:1/-1;grid-row:2;justify-content:flex-start;width:100%;flex-wrap:wrap;gap:4px 16px}
-  .bar nav a{letter-spacing:.2em}
-  .bar nav a{flex:0 0 auto}
+  .bar nav{grid-column:1/-1;grid-row:2;justify-content:space-between;width:100%;flex-wrap:nowrap;gap:0 6px;overflow-x:auto;scrollbar-width:none}
+  .bar nav::-webkit-scrollbar{display:none}
+  .bar nav a{letter-spacing:.08em;font-size:min(10px,2.6vw);white-space:nowrap;flex:0 0 auto}
+  .pj-head .sub span:last-child{display:none}
+  .g3{height:auto;min-height:0;aspect-ratio:3/2;width:100%;max-width:100%;min-width:0;contain:inline-size}
+  .g3-ui{max-width:calc(100% - 12px)}
+  .g3-ui{left:6px;right:6px;bottom:6px;flex-wrap:nowrap;overflow-x:auto;gap:5px;scrollbar-width:none;pointer-events:auto}
+  .g3-ui::-webkit-scrollbar{display:none}
+  .g3-ui button{flex:0 0 auto;white-space:nowrap;padding:6px 9px;font-size:8.5px;letter-spacing:.1em}
   .pubs,.conc{grid-template-columns:minmax(0,1fr)}
   .cyc,.cyc.one{grid-template-columns:minmax(0,1fr)}
   .cyc>.lb{border-right:0;border-bottom:1px solid var(--line);padding:12px 0}
@@ -409,7 +415,6 @@ html:not([lang="en"]) .pj-head .sub[lang="en"],html[lang="en"] .pj-head .sub[lan
   .cc .strip{height:230px}
   .parc li{grid-template-columns:minmax(0,1fr);gap:2px}
   .tile{height:110px}
-  .g3{height:62vh;min-height:340px}
   .g3-ui .hint{display:none}
   .v-stage{padding:12px 8px}
   .unit img{max-width:calc(100vw - 24px)}
@@ -1224,6 +1229,7 @@ var TXT_VENTRES='<p class="lead">Penser la ville contemporaine ne consiste plus 
     },250),started=false,t0=performance.now();}
   // la fenêtre 3D tient en entier sous le titre à l'ouverture (iPad : elle était coupée en bas)
   function fitG3(){var h=$("g3");if(!h)return;var top=h.getBoundingClientRect().top+scrollY,v=(window.visualViewport&&visualViewport.height)||innerHeight;
+    if(innerWidth<=640){h.style.height="";return}
     h.style.height=Math.round(Math.max(300,Math.min(720,v-top-16)))+"px"}
   addEventListener("resize",fitG3);
   function mount3d(name){
