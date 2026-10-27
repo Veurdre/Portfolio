@@ -1435,8 +1435,10 @@ let AG=[],acur=-1,WH=null;const VIS={e:1,c:1,a:0};const selI=()=>acur>=0?100+acu
 function marks(){document.querySelectorAll(".it").forEach(b=>{const i=+b.dataset.i;b.classList.toggle("on",i===selI());b.classList.toggle("hot",i===hov)})}
 function caption(i){if(i<0){$("tit").textContent="";$("sub").textContent="";return}if(i>=100){const a=AG[i-100];$("tit").textContent=a.t;$("sub").textContent=(a.t!==a.c?a.c+" · ":"")+a.y;return}$("tit").textContent=P[i].t;$("sub").textContent=P[i].s}
 // la plongée : le globe tourne vers le lieu, on descend, la vue s'incline et la maquette s'imprime sur place
+const WARM={varese:["varese.json","varese_env.json"],agri:["agri.json","agri_life.json?v=117"],terminus:["terminus.json?v=120"],elle:["elle.json"],ventres:["ventres.json?v=6"],crank:["crank.json?v=1"],siberian:["siberian.json?v=3"],equilibrium:["equilibrium.json?v=1"]},warmed={};
+function warm(k){if(warmed[k]||!WARM[k])return;warmed[k]=1;WARM[k].forEach(f=>{try{fetch("data/"+f,{priority:"low"}).catch(()=>{})}catch(e){}})}   // précharge la maquette dès qu'un projet est survolé ou choisi
 function toStage(){if(innerWidth<=760){scrollTo({top:0,behavior:"smooth"});setTimeout(()=>{if(scrollY>4)scrollTo({top:0,behavior:"smooth"})},350)}}
-function choose(i){toStage();if(i>=100)return chooseAg(i-100);if(i===cur&&mode==="site")return;acur=-1;$("fiche").classList.remove("ag");const p=P[i],prev=cur;cur=i;marks();caption(i);$("go").hidden=false;$("go").href=hrefFor(p);$("back").hidden=false;
+function choose(i){toStage();if(P[i])warm(P[i].k);if(i>=100)return chooseAg(i-100);if(i===cur&&mode==="site")return;acur=-1;$("fiche").classList.remove("ag");const p=P[i],prev=cur;cur=i;marks();caption(i);$("go").hidden=false;$("go").href=hrefFor(p);$("back").hidden=false;
   $("coord").textContent=p.route?"le long du Transsibérien":fmtLL(p.ll);
   fiche(-1);const s={...V},dl=wrap(p.ll[1]-V.lon),fromSite=mode!=="globe",far=angDist([V.lat,V.lon],p.ll);
   const hz=(p.hz||HZ)*(innerWidth<=760?.63:1),tz=(p.tz!=null?p.tz:TZ)*D2R,lz=15*S*.5;  // même cadrage pour toutes les maquettes : le disque arrive toujours à la même taille (calé sur Terminus)  // on vise le milieu de la hauteur de la maquette
@@ -1464,7 +1466,7 @@ function fiche(i){const F=$("fiche");gallery(i);if(i<0){F.classList.remove("on",
 
 /* ---------- la liste ---------- */
 P.forEach((p,i)=>{const b=document.createElement("button");b.type="button";b.className="it";b.dataset.i=i;b.innerHTML="<b>"+p.t+"</b><span>"+p.c+"</span>";
-  b.addEventListener("click",()=>choose(i));b.addEventListener("pointerenter",()=>setHov(i));b.addEventListener("pointerleave",()=>setHov(-1));b.addEventListener("focus",()=>setHov(i));b.addEventListener("blur",()=>setHov(-1));
+  b.addEventListener("click",()=>choose(i));b.addEventListener("pointerenter",()=>{setHov(i);if(P[i])warm(P[i].k)});b.addEventListener("pointerleave",()=>setHov(-1));b.addEventListener("focus",()=>setHov(i));b.addEventListener("blur",()=>setHov(-1));
   $(p.f==="e"?"cE":"cC").appendChild(b)});
 function setHov(i){if(hov===i)return;hov=i;marks();if(cur<0&&acur<0)caption(i)}
 // projet d'agence : pas de maquette ; le globe tourne vers la ville, se rapproche un peu, la fiche courte s'ouvre
