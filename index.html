@@ -1413,7 +1413,7 @@ function setModel(k){objs.forEach(o=>{mdl.remove(o);o.geometry.dispose()});objs=
   for(const [key,mt] of [["skinA",H.skA],["skinB",H.skB]])if(G[key]){const gs=new THREE.BufferGeometry();gs.setAttribute("position",new THREE.Float32BufferAttribute(G[key],3));const ms=new THREE.Mesh(gs,mt);ms.renderOrder=6;mdl.add(ms);objs.push(ms)}
   const o=[];for(let i=0;i<96;i++){const a=i/96*Math.PI*2,b=(i+1)/96*Math.PI*2;o.push(Math.cos(a)*Rp,0,Math.sin(a)*Rp,Math.cos(b)*Rp,0,Math.sin(b)*Rp)}const rg=new THREE.BufferGeometry();rg.setAttribute("position",new THREE.Float32BufferAttribute(o,3));
   ring=new THREE.LineSegments(rg,H.ring);ring.renderOrder=7;mdl.add(ring);objs.push(ring);target=G.h+2;
-  if(G.logo){const ph=innerWidth<=760,w=Rp*(ph?.5:.62),pg=new THREE.PlaneGeometry(w,w);for(const r of [0,Math.PI]){const p=new THREE.Mesh(pg,H.logo);p.rotation.y=r;p.position.y=G.h+Rp*(ph?.6:1.0);p.renderOrder=8;mdl.add(p);objs.push(p)}}}
+  if(G.logo){const ph=innerWidth<=760,w=Rp*(ph?.5:.62),pg=new THREE.PlaneGeometry(w,w);for(const r of [0,Math.PI]){const p=new THREE.Mesh(pg,H.logo);p.rotation.y=r;p.position.y=G.h+Rp*(ph?.72:1.0);p.renderOrder=8;mdl.add(p);objs.push(p)}}}
 
 function theme(){const g=new THREE.Color(css("--gl")),pin=new THREE.Color(css("--brick")),bg=new THREE.Color(css("--bg"));
   [M.grat,M.coast,M.bord,M.back,M.limb,M.coast2,M.bord2,M.reg,M.sea].forEach(m=>m.color.copy(g));const gm=new THREE.Color(css("--glm"));[H.model,H.disc,H.fine,H.ring,H.mfine,H.cseg,H.cfine].forEach(m=>m.color.copy(gm));H.green.color.set(css("--tube"));H.skA.color.copy(gm);H.logo.color.copy(gm);H.skB.color.copy(gm);M.pin.color.copy(pin);M.route.color.copy(pin);occM.color.copy(bg);H.veil.color.copy(bg);fxCol=css("--glm");
